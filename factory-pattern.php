@@ -21,7 +21,7 @@
       //bigger means faster
       const SPEED_COEFICIENT = 2;
 
-      private function __construct( $size )
+      public function __construct( $size )
       {
           $this->size = $size;
           $this->speed = $this->setSpeed();
