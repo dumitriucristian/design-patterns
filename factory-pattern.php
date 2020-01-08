@@ -43,25 +43,16 @@
 
     class BuildResearchShip extends FactorySpaceShip
     {
-        //build ship
-        public function __construct(){
 
-            $this->build();
-        }
         public function build() : Ship
         {
             //...... a lot of things that build a ship
-            echo 'ss';
             return new ResearchSpaceShip();
         }
     }
 
     class BuildWarShip extends FactorySpaceShip
     {
-        //build ship
-        public function __construct(){
-           // $this->build();
-        }
 
         public function build() : Ship
         {
