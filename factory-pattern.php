@@ -11,9 +11,10 @@
 
 <?php
 
-    class FactorySpaceShips
+    abstract class FactorySpaceShip
     {
-        public function buildSpaceShips( $type )
+
+      /*  private function buildSpaceShips( $type )
         {
             if ($type == 'war') {
                $ship = $this->buildWarSpaceShip() ;
@@ -28,62 +29,109 @@
             }
               return $ship;
         }
+        */
 
-        private function buildWarSpaceShip()
-        {
-           return  new WarSpaceShip();
-        }
 
         private function buildTransportSpaceShip()
         {
            return   new TransportSpaceShip();
         }
 
-        private function buildResearchSpaceShip()
-        {
-           return  new ResearchSpaceShip();
-        }
+        abstract public function build() : Ship ;
 
     }
 
-   class TransportSpaceShip
+    class BuildResearchShip extends FactorySpaceShip
+    {
+        //build ship
+        public function __construct(){
+
+            $this->build();
+        }
+        public function build() : Ship
+        {
+            //...... a lot of things that build a ship
+            echo 'ss';
+            return new ResearchSpaceShip();
+        }
+    }
+
+    class BuildWarShip extends FactorySpaceShip
+    {
+        //build ship
+        public function __construct(){
+           // $this->build();
+        }
+
+        public function build() : Ship
+        {
+            //...... a lot of things that build a ship
+            return new WarSpaceShip();
+        }
+    }
+
+
+
+   interface Ship
+   {
+       //some common ship method;
+       public function fly();
+   }
+
+
+   class TransportSpaceShip implements Ship
    {
         private $speed = 5;
+        private $distance = 5;
 
         public function transport( $qty )
         {
            echo 'I am transporting this amount of merchandise ' . $qty ;
         }
+
+        public function fly(){
+            echo "Transport ship flew. ". $this->distance . "years light" ;
+        }
    }
 
-   class WarSpaceShip
+   class WarSpaceShip implements Ship
    {
        private $speed = 10;
-
+       private $distance = 15;
        public function fire( $nrOfMisiles )
        {
            echo 'I am firing towards enemyes this amount of missilles ' . $nrOfMisiles ;
        }
+
+       public function fly(){
+           echo "War ship flew. ". $this->distance . "years light" ;
+       }
+
    }
 
-   class ResearchSpaceShip
+   class ResearchSpaceShip implements Ship
    {
        private $speed = 8;
+       private $distance = 8;
 
-       public function scanning( $nrOfPlanets )
+       public function scan( $nrOfPlanets )
        {
            echo 'I am scanning ' . $nrOfPlanets . ' planets';
        }
+
+       public function fly(){
+           echo "Research ship flew. ". $this->distance . "years light" ;
+       }
+
    }
 
+    $builder = new BuildResearchShip();
+    $ship = $builder->build();
+    $ship->fly();
 
-   $factory = new FactorySpaceShips();
-
-   $researchShip = $factory->buildSpaceShips('research');
-   $researchShip->scanning(5);
-
-
-
+    $builder = new BuildWarShip();
+    $ship = $builder->build();
+    $ship->fly();
 
 
 
