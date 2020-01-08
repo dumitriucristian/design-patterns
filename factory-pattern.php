@@ -7,101 +7,82 @@
 <h3>Solution:</h3>
 <p>Replace direct object construction with calls toa a special factory method</p>
 
-<h3>A spaceship game require many type of asteroids with n size's and collors.</h3>
+<h3>A spaceship game require many type of spaceships with n size's and collors.</h3>
 
 <?php
 
-  //concrete prod 1
-  class Asteroid
-  {
+    class FactorySpaceShips
+    {
+        public function buildSpaceShips( $type )
+        {
+            if ($type == 'war') {
+               $ship = $this->buildWarSpaceShip() ;
+            }
 
-      private $size;
-      private $speed;
+            if ($type == 'transport') {
+               $ship = $this->buildTransportSpaceShip() ;
+            }
 
-      //bigger means faster
-      const SPEED_COEFICIENT = 2;
+            if ($type == 'research') {
+               $ship = $this->buildResearchSpaceShip() ;
+            }
+              return $ship;
+        }
 
-      public function __construct( $size )
-      {
-          $this->size = $size;
-          $this->speed = $this->setSpeed();
+        private function buildWarSpaceShip()
+        {
+           return  new WarSpaceShip();
+        }
 
-      }
+        private function buildTransportSpaceShip()
+        {
+           return   new TransportSpaceShip();
+        }
 
-      private function setSpeed()
-      {
-          return $this->size * self::SPEED_COEFICIENT;
-      }
+        private function buildResearchSpaceShip()
+        {
+           return  new ResearchSpaceShip();
+        }
 
-      public function getSpeed()
-      {
-          return  $this->speed;
-      }
+    }
 
-  }
-
-  //concrete product 2
-   class Spaceship
+   class TransportSpaceShip
    {
-        private $size;
-        private $speed;
+        private $speed = 5;
 
-        //bigger means slower
-        const SPEED_COEFICIENT = 0.5;
-
-        public function __construct($size)
+        public function transport( $qty )
         {
-            $this->size = $size;
-            $this->speed = $this->setSpeed();
-
+           echo 'I am transporting this amount of merchandise ' . $qty ;
         }
-        private function setSpeed()
-        {
-           return  $this->size * self::SPEED_COEFICIENT;
-        }
+   }
 
-       public function getSpeed()
+   class WarSpaceShip
+   {
+       private $speed = 10;
+
+       public function fire( $nrOfMisiles )
        {
-           return $this->speed;
+           echo 'I am firing towards enemyes this amount of missilles ' . $nrOfMisiles ;
+       }
+   }
+
+   class ResearchSpaceShip
+   {
+       private $speed = 8;
+
+       public function scanning( $nrOfPlanets )
+       {
+           echo 'I am scanning ' . $nrOfPlanets . ' planets';
        }
    }
 
 
-   interface SpaceFactory
-   {
-       public function createSpaceObject(  $size);
-   }
+   $factory = new FactorySpaceShips();
+
+   $researchShip = $factory->buildSpaceShips('research');
+   $researchShip->scanning(5);
 
 
-   class SpaceShipFactory implements SpaceFactory
-   {
-       public function createSpaceObject( $size)
-       {
-
-             return  new Spaceship($size) ;
-
-       }
-
-   }
-
-      class AsteroidFactory implements SpaceFactory
-      {
-          public function createSpaceObject( $size)
-          {
-
-              return  new Asteroid($size) ;
-
-          }
-      }
-
-
-
-
-        $asteroidFactory = new AsteroidFactory ();
-        $asteroid = $asteroidFactory->createSpaceObject(50);
-
-
-        var_dump($asteroid);
 
 
 
